@@ -1,7 +1,6 @@
 import { BriefcaseBusiness, FolderGit2, House, Star } from "lucide-react";
 import Photo from "../assets/img/myProfilePhoto.jpeg";
 import MaleAvator from "../assets/img/icons/male-avatar.png";
-import FemaleAvator from "../assets/img/icons/female-avatar.png";
 import ReactIcon from "../assets/img/icons/skills-tools/react.png";
 import AndroidStudioIcon from "../assets/img/icons/skills-tools/androidstudio.png";
 import BootstrapIcon from "../assets/img/icons/skills-tools/bootstrap.png";
