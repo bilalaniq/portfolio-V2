@@ -3,7 +3,7 @@ import { FooterSectionHeading, fullName, LinkedInIcon, LinkedInProfile } from '@
 import { LetsTalkBtn } from './ui/lets-talk-btn';
 
 const Footer = () => {
-    const d = new Date();
+  const d = new Date();
   let year = d.getFullYear();
   return (
     <div>
@@ -11,7 +11,7 @@ const Footer = () => {
         <div className='pt-10'>
           <div className='bg-myPalette9 rounded-3xl flex flex-col justify-center items-center p-10'>
             <p className='text-myPalette1 text-4xl font-bold font-myMainFont'>{FooterSectionHeading}</p>
-            <a href="https://wa.me/+92344603782?text=Hello, How can I help you?" target='_blank' className='mt-6'>
+            <a href="https://wa.me/+923056303037?text=Hello, How can I help you?" target='_blank' className='mt-6'>
               <LetsTalkBtn />
             </a>
           </div>
