@@ -1,8 +1,8 @@
 ---
-title: 'Markdown Style Test Bench1'
+title: 'Test'
 author: 'Bilal ☽'
 date: '2026-06-21'
-category: 'Internal QA'
+category: 'Testing'
 status: 'Draft'
 ---
 

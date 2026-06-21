@@ -248,7 +248,7 @@ const Paper: React.FC = () => {
         <main className="paper-isolated-wrapper">
             <style dangerouslySetInnerHTML={{ __html: cssStyles }} />
             <div className="paper-container-inner">
-                <nav className="paper-nav-links"><Link to="/">Home</Link> / <span className="active-nav-node">Papers</span></nav>
+                <nav className="paper-nav-links"><Link to="/">Home</Link> / <Link to="/blogs">Blogs</Link> / <span className="active-nav-node">{meta.title || 'Untitled Paper'}</span></nav>
                 <h1 className="paper-title-outside">{meta.title || 'Untitled Paper'}</h1>
                 <div className="paper-author-title">{meta.author || 'Unknown Researcher'}</div>
                 <div className="paper-post-meta">Date: {meta.date || 'Unknown'} // Sector: /content/{slug}.md // Status: {meta.status || 'Active'}</div>
