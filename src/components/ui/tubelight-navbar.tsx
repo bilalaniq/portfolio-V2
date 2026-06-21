@@ -112,7 +112,7 @@ export function TubeLightNavBar({ items, className, firstName }: NavBarProps) {
                   "relative text-base font-myMainFont font-semibold px-4.5 py-2.5 rounded-full transition-colors",
                   "text-myPalette9/80 hover:text-myPalette8 hover:bg-myPalette2",
                   isActive &&
-                    "bg-myPalette9 hover:bg-myPalette9 text-myPalette1 hover:text-myPalette1"
+                  "bg-myPalette9 hover:bg-myPalette9 text-myPalette1 hover:text-myPalette1"
                 )}
               >
                 <span className="hidden md:inline">{item.name}</span>
@@ -196,7 +196,7 @@ export function TubeLightNavBar({ items, className, firstName }: NavBarProps) {
                           "relative text-sm md:text-base font-myMainFont font-semibold px-4.5 py-2.5 rounded-full transition-colors",
                           "text-myPalette9/80 hover:text-myPalette8 hover:bg-myPalette2",
                           isActive &&
-                            "bg-myPalette9 hover:bg-myPalette9 text-myPalette1 hover:text-myPalette1"
+                          "bg-myPalette9 hover:bg-myPalette9 text-myPalette1 hover:text-myPalette1"
                         )}
                       >
                         <span className="hidde md:inline">{item.name}</span>

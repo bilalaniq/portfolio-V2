@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, FolderGit2, House, Star } from "lucide-react";
+import { BriefcaseBusiness, FolderGit2, House, Star, NotebookPen } from "lucide-react";
 import Photo from "../assets/img/myProfilePhoto.jpeg";
 import MaleAvator from "../assets/img/icons/male-avatar.png";
 import ReactIcon from "../assets/img/icons/skills-tools/react.png";
@@ -59,7 +59,8 @@ export const NavLinks = [
   { id: 1, name: "Home", url: "/#Hero", icon: House },
   { id: 2, name: "Experience", url: "/#Experience", icon: BriefcaseBusiness },
   { id: 3, name: "Work", url: "/#Work", icon: FolderGit2 },
-  { id: 3, name: "Reviews", url: "/#Testimonials", icon: Star },
+  { id: 5, name: "Blogs", url: "/#Blog", icon: NotebookPen },   // ← leading slash
+  { id: 4, name: "Reviews", url: "/#Testimonials", icon: Star },
 ];
 
 export const firstName = "Bilal";
@@ -71,7 +72,7 @@ export const profilePhoto = Photo;
 export const GitHubProfile = "https://github.com/bilalaniq";
 export const LinkedInProfile = "https://www.linkedin.com/in/muhammad-bilal-b159a5292/";
 export const MediumProfile = "https://medium.com/@bilalaniq";
-export const InstagramProfile = "https://www.instagram.com/bilalaniq4/";``
+export const InstagramProfile = "https://www.instagram.com/bilalaniq4/"; ``
 
 // Hero Section
 export const HeroSectionHeading =
@@ -221,26 +222,26 @@ export const ProjectCardsData = [
     type: "Personal",
     year: "2026",
     technologies: [
-        "React Native",
-        "Expo",
-        "TypeScript",
-        "Python",
-        "FastAPI",
-        "Groq AI",
-        "Google Fit API",
-        "Open-Meteo API",
-      ],
-      
+      "React Native",
+      "Expo",
+      "TypeScript",
+      "Python",
+      "FastAPI",
+      "Groq AI",
+      "Google Fit API",
+      "Open-Meteo API",
+    ],
+
     techColors: [
-        "#61DAFB", // React Native - blue
-        "#000020", // Expo - black
-        "#3178C6", // TypeScript - blue
-        "#3776AB", // Python - blue
-        "#009688", // FastAPI - teal
-        "#F55036", // Groq - orange
-        "#4285F4", // Google - blue
-        "#00AAFF", // Open-Meteo - light blue
-      ],
+      "#61DAFB", // React Native - blue
+      "#000020", // Expo - black
+      "#3178C6", // TypeScript - blue
+      "#3776AB", // Python - blue
+      "#009688", // FastAPI - teal
+      "#F55036", // Groq - orange
+      "#4285F4", // Google - blue
+      "#00AAFF", // Open-Meteo - light blue
+    ],
     projectUrl:
       "",
     githubUrl: "https://github.com/bilalaniq/Neuroheal",
@@ -252,7 +253,7 @@ export const ProjectCardsData = [
     image: visualcordex,
     type: "Personal",
     year: "2025",
-    technologies: ["HTML", "CSS" , "JavaScript"],
+    technologies: ["HTML", "CSS", "JavaScript"],
     techColors: ["#818CF8", "#38B2AC", "#3178C6"],
     projectUrl: "https://visual-codex.vercel.app/",
     githubUrl: "https://github.com/bilalaniq/VisualCodex",
@@ -278,7 +279,7 @@ export const ProjectCardsData = [
     type: "Personal",
     year: "2025",
     technologies: [
-      "C++" , "C" , "wxwidgets"
+      "C++", "C", "wxwidgets"
     ],
     techColors: ["#818CF8", "#38B2AC", "#3178C6"],
     projectUrl:
@@ -294,7 +295,7 @@ export const ProjectCardsData = [
     type: "Professional",
     year: "2025",
     technologies: [
-      "C++" , "Makefile" , "JSON"
+      "C++", "Makefile", "JSON"
     ],
     techColors: ["#818CF8", "#38B2AC", "#3178C6"],
     projectUrl:
@@ -670,7 +671,7 @@ export const SkillsData1 = [
 ];
 
 export const SkillsData2 = [
-   {
+  {
     id: 8,
     name: "C++",
     icon: cppIcon,

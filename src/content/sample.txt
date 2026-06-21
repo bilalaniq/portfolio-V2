@@ -1,7 +1,7 @@
 ---
 title: 'Markdown Style Test Bench'
 author: 'Bilal ☽'
-date: '2026-06-21'
+date: '2026-06-22'
 category: 'Internal QA'
 status: 'Draft'
 ---
@@ -48,7 +48,7 @@ status: 'Draft'
 
 # Heading Level 1
 
-This paragraph exists to test **bold text**, *italic text*, ~~strikethrough text~~, and `inline code`. It also contains a [link to Anthropic](https://www.anthropic.com) to check link color and hover state.
+This paragraph exists to test **bold text**, *italic text*, ~~strikethrough text~~, and `inline code`. It also contains a [link to google](https://www.google.com/) to check link color and hover state.
 
 You can also press <kbd>Ctrl</kbd> + <kbd>C</kbd> to copy, and this sentence has a <mark>highlighted phrase</mark> in it.
 

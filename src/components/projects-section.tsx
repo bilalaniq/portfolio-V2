@@ -1,3 +1,4 @@
+// components/projects-section.tsx
 import { useState } from "react";
 import StackingCards, { StackingCardItem } from "./ui/stacking-cards";
 import {
@@ -13,13 +14,14 @@ import { VisitLiveSiteBtn } from "./ui/visit-live-site-btn";
 import { GithubIconBtn } from "./ui/github-icon-btn";
 import { Link } from "react-router";
 import { motion } from "motion/react";
+import { Lamp } from "@/components/ui/lamp";   // ✅ import Lamp
 
 const ProjectsSection = () => {
   // @ts-ignore
   const [container, setContainer] = useState<HTMLElement | null>(null);
 
   return (
-    <div id="Work" className="z-[2]">
+    <div id="Work" className="z-[2] mb-20">
       <MaxWidthWrapper>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -58,7 +60,11 @@ const ProjectsSection = () => {
                 )}>
 
                   {/* ── LEFT: text panel ── */}
-                  <div className="flex-1 flex flex-col p-7 md:p-8 min-w-0">
+                  {/* ✅ added relative here */}
+                  <div className="flex-1 flex flex-col p-7 md:p-8 min-w-0 relative">
+
+                    {/* ✅ Lamp added – unique layoutId per card */}
+                    <Lamp layoutId={`lamp-project-${index}`} />
 
                     {/* type · year */}
                     <div className="flex items-center gap-2 mb-4">
