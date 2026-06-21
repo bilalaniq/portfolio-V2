@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper: Making a 443MHz Jammer for Less Than $10 - Clone Layout</title>
+    <style>
+        /* ==========================================================================
+           STARK MONOSPACE PAPER THEME (Amolo Papers Style)
+           ========================================================================== */
+
+        :root {
+          --bg-color: #0b0c10;        /* Pure void dark background */
+          --text-color: #c5c6c7;      /* Clean gray text for long-form reading */
+          --accent-color: #66fcf1;    /* Technical cyan highlight tracking links */
+          --muted-color: #45f3ff;     /* Alternate matrix accent */
+          --dim-text: #6f7278;        /* Soft code comment grey */
+          --code-inner: #1f2833;      /* Contrast bracket container backgrounds */
+          --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        /* Base Body Framework */
+        body {
+          background-color: var(--bg-color);
+          color: var(--text-color);
+          font-family: var(--font-mono);
+          font-size: 14px;
+          line-height: 1.6;
+          margin: 0;
+          padding: 3rem 1.5rem;
+        }
+
+        .container {
+          max-width: 750px;
+          margin: 0 auto;
+        }
+
+        /* Nav-Bar Design Elements */
+        .nav-links {
+          margin-bottom: 2rem;
+          font-size: 0.95rem;
+        }
+        .nav-links a {
+          color: #ffffff;
+          text-decoration: none;
+        }
+        .nav-links a.active {
+          color: var(--accent-color);
+          text-shadow: 0 0 5px rgba(102, 252, 241, 0.4);
+        }
+
+        .author-title {
+          color: #ffffff;
+          font-size: 1.1rem;
+          margin-bottom: 1.5rem;
+        }
+
+        /* Core Title Settings */
+        .main-title {
+          color: #ffffff;
+          font-size: 1.8rem;
+          margin: 0.5rem 0;
+          font-weight: bold;
+        }
+
+        .post-meta {
+          color: var(--dim-text);
+          font-size: 0.9rem;
+          margin-bottom: 2rem;
+        }
+
+        /* Headings with solid text rules */
+        h2 {
+          color: #ffffff;
+          font-size: 1.4rem;
+          margin-top: 3rem;
+          margin-bottom: 1rem;
+        }
+
+        /* Raw ASCII Art Formatting Containers */
+        .ascii-art {
+          color: var(--dim-text);
+          font-size: 9px;
+          line-height: 1.1;
+          overflow-x: auto;
+          margin: 2rem 0;
+          white-space: pre;
+        }
+
+        .matrix-box {
+          color: #ffffff;
+          white-space: pre;
+          overflow-x: auto;
+          font-size: 0.95rem;
+          margin: 2rem 0;
+          line-height: 1.3;
+        }
+
+        /* Embedded Inline Micro-Code blocks */
+        code {
+          background-color: var(--code-inner);
+          color: #ff4a5a;
+          padding: 1px 5px;
+          font-size: 0.9em;
+        }
+
+        /* Terminal System Boxes */
+        .terminal-code-block {
+          border: 1px solid #333;
+          margin: 2rem 0;
+          background-color: #0f1115;
+        }
+
+        .terminal-header {
+          background-color: #1a1c23;
+          padding: 0.4rem 1rem;
+          font-size: 0.85rem;
+          color: #888;
+          border-bottom: 1px solid #333;
+        }
+
+        .terminal-code-block pre {
+          margin: 0;
+          padding: 1rem;
+          overflow-x: auto;
+        }
+
+        .terminal-code-block code {
+          background: transparent;
+          color: #e0e0e0;
+          padding: 0;
+          display: block;
+        }
+
+        /* Explicit Token Highlighting Targets */
+        .keyword  { color: #ff5f56; font-weight: bold; }
+        .register { color: #ffbd2e; }
+        .address  { color: #27c93f; }
+        .string   { color: #a5d6ff; }
+        .comment  { color: var(--dim-text); font-style: italic; }
+
+        /* Structural Dividers */
+        .minimal-divider {
+          border: 0;
+          border-top: 1px dashed #333;
+          margin: 4rem 0 2rem 0;
+        }
+
+        .disclaimer {
+          color: var(--dim-text);
+          font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <!-- Minimal Top Navigation -->
+        <nav class="nav-links">
+            ❮─❲<a href="#">Home</a>❳─❯ ❮─❲<a href="#" class="active">✧Papers✧</a>❳─❯ <a href="#">Members</a>
+        </nav>
+
+        <!-- Author Meta Info -->
+        <div class="author-title">
+            <span>YourName ☽</span>
+        </div>
+
+        <!-- Main Document Title -->
+        <h1 class="main-title">Making a 443MHz Jammer for Less Than $10</h1>
+        <div class="post-meta">Author: @your_handle</div>
+
+        <!-- ASCII Banner Divider -->
+        <pre class="ascii-art">
+ ⣆⠈⠳⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠴⠒⢲
+ ⠘⢦⡀⠀⠙⠲⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀ keep learning ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠖⠉⠀⢀⡴⠋
+ ⠀⠀⠈⣒⠤⢄⣀⡈⠍⣒⡒⠠⠵⣏⠙⠒⢺⣅⢿⡍⠀⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡏⠀⣹⢥⡗⠶⠌⣉⠯⠔⣒⣊⠩⠁⠀⣀⣠⣖⣏⠀⠀
+ ⠀⠀⠀⠀⠑⢤⡀⠀⠈⠉⠒⠒⠫⠭⢼⣛⠒⠒⡧⣽⣏⡀⢸⡀⠀⠀⠀keep hacking!⠀⠀⠀ ⣸⠁⣈⣷⡲⡏⠉⣙⡯⠭⠥⠒⠒⠊⠉⠉⠀⢀⡴⠃⠀
+        </pre>
+
+        <!-- ASCII Index Matrix Bracket -->
+        <div class="matrix-box">
+┌───────────────────────────[Summary]───────────────────────────┐
+│                                                               │
+│  1. Introduction                                              │
+│  2. Hardware Layout & Requirements                            │
+│  3. Signal Analysis & Frequencies                             │
+│  4. Implementation Code Layout                                │
+│  5. Testing and Conclusion                                    │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘
+        </div>
+
+        <!-- Content Section -->
+        <section>
+            <h2>Introduction</h2>
+            <p>Without a doubt, the field of <code>low-level binary analysis</code> and hardware signals has always been fertile ground for the most curious. When designing test circuits operating inside the Industrial, Scientific, and Medical (ISM) radio bands, minimizing complexity is critical.</p>
+            <p>In this write-up, we look directly at assembling low-cost oscillator modules to test containment parameters inside target validation shielding environments.</p>
+        </section>
+
+        <!-- Code Breakdown Section -->
+        <section>
+            <h2>Hardware Control Routine</h2>
+            <p>Below is the terminal layout structure matching the code file blocks from the original paper. Note how variables manage standard MCU pin states:</p>
+
+            <!-- Terminal-style Code Block -->
+            <div class="terminal-code-block">
+                <div class="terminal-header">
+                    <span>File: transmitter.cpp</span>
+                </div>
+                <pre><code><span class="keyword">#define</span> TX_PIN 12
+<span class="keyword">#define</span> FREQUENCY 443000000
+
+<span class="keyword">void</span> <span class="address">setup</span>() {
+    pinMode(TX_PIN, OUTPUT);
+}
+
+<span class="keyword">void</span> <span class="address">loop</span>() {
+    <span class="comment">// Rapid state toggling logic</span>
+    digitalWrite(TX_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TX_PIN, LOW);
+    delayMicroseconds(10);
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer>
+            <hr class="minimal-divider">
+            <p class="disclaimer">Note: This paper is for educational purposes only. Everyone is responsible for their own actions.</p>
+        </footer>
+    </main>
+
+</body>
+</html>
