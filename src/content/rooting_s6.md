@@ -33,16 +33,16 @@ status: 'In Progress'
 
 
 <pre class="matrix-box">
-                                 ┌───────────────────────────[Summary]───────────────────────────┐
-                                 │                                                               │
-                                 │  1. Prerequisites & Disclaimers                               │
-                                 │  2. Phase 1: Recovery Installation (Heimdall)                 │
-                                 │  3. Phase 2: Clean & LineageOS Deployment                     │
-                                 │  4. Phase 3: NetHunter Chroot Setup                           │
-                                 │  5. Phase 4: USB HID Kernel Enforcement                       │
-                                 │  6. Phase 5: DuckHunter USB Exploits                          │
-                                 │                                                               │
-                                 └───────────────────────────────────────────────────────────────┘
+                                  ┌───────────────────────────[Summary]───────────────────────────┐
+                                  │                                                               │
+                                  │  1. Prerequisites & Disclaimers                               │
+                                  │  2. Phase 1: Recovery Installation (Heimdall)                 │
+                                  │  3. Phase 2: Clean & LineageOS Deployment                     │
+                                  │  4. Phase 3: NetHunter Chroot Setup                           │
+                                  │  5. Phase 4: USB HID Kernel Enforcement                       │
+                                  │  6. Phase 5: DuckHunter USB Exploits                          │
+                                  │                                                               │
+                                  └───────────────────────────────────────────────────────────────┘
 </pre>
 
 
@@ -239,35 +239,147 @@ Connecting the phone successfully generated **/dev/hidraw2** and **/dev/hidraw3*
 This confirms your custom kernel and USB spoofing setup are working perfectly, meaning your S6 Edge is officially ready to execute DuckHunter payloads.
 
 ---
-<!-- 
+
 ### Phase 5: Executing DuckHunter Exploits
 
 DuckHunter converts standard **USB Rubber Ducky scripts** (Duckyscript) into raw commands that NetHunter's HID system can inject seamlessly.
 
+
+you could get duck hunter from [here](https://github.com/byt3bl33d3r/duckhunter)
+
 ### Step 1: Prepare Your Duckyscript
 
-Create a plain text payload on your device or PC named `payload.txt`.
+lets just create an payload to prank rickroll 
 
-text
 
-    REM Example Duckyscript payload to open notepad
-    DELAY 3000
-    GUI r
-    DELAY 500
-    STRING notepad.exe
-    ENTER
-    DELAY 500
-    STRING Hello from your Samsung S6 Edge HID device!
-    ENTER
-    
+```text
+REM Title: Windows Rickroll for DuckyHunter
+REM Wait for device enumeration
+DELAY 1000
 
-Use code with caution.
+REM Open Windows Run dialog
+GUI r
+DELAY 600
 
-### Step 2: Convert and Execute via DuckHunter
+REM Type the URL to launch the default browser
+REM Note: STRING automatically presses ENTER in DuckyHunter
+STRING https://www.youtube.com/shorts/Ay8lynMZ4mE
+```
 
-1.  Open the **NetHunter App** and select **HID Attacks**.
-2.  Inside the HID Attacks interface, find the **DuckHunter** tab.
-3.  Load your `payload.txt` file into the interface.
-4.  Set your target operating system keyboard layout (e.g., `us`).
-5.  Connect your Samsung S6 Edge to the victim PC via a USB cable.
-6.  Press **Attack** or **Execute**. The phone will instantly spoof a standard USB keyboard and automatically inject the script instructions. -->
+then use this command to convert to `.sh` file 
+
+```bash
+python duckhunter.py scripts/rick_roll_win duck_out.sh
+```
+
+this will save the out put file in the duck_out.sh
+
+now the file would have the following 
+
+```bash
+# Title: Windows Rickroll for DuckyHunter
+# Wait for device enumeration
+sleep 1
+# Open Windows Run dialog
+echo left-meta r | hid-keyboard /dev/hidg0 keyboard
+sleep 0.6
+# Type the URL to launch the default browser
+# Note: STRING automatically presses enter in DuckyHunter
+echo h | hid-keyboard /dev/hidg0 keyboard
+echo t | hid-keyboard /dev/hidg0 keyboard
+echo t | hid-keyboard /dev/hidg0 keyboard
+echo p | hid-keyboard /dev/hidg0 keyboard
+echo s | hid-keyboard /dev/hidg0 keyboard
+echo left-shift semicolon | hid-keyboard /dev/hidg0 keyboard
+echo slash | hid-keyboard /dev/hidg0 keyboard
+echo slash | hid-keyboard /dev/hidg0 keyboard
+echo w | hid-keyboard /dev/hidg0 keyboard
+echo w | hid-keyboard /dev/hidg0 keyboard
+echo w | hid-keyboard /dev/hidg0 keyboard
+echo period | hid-keyboard /dev/hidg0 keyboard
+echo y | hid-keyboard /dev/hidg0 keyboard
+echo o | hid-keyboard /dev/hidg0 keyboard
+echo u | hid-keyboard /dev/hidg0 keyboard
+echo t | hid-keyboard /dev/hidg0 keyboard
+echo u | hid-keyboard /dev/hidg0 keyboard
+echo b | hid-keyboard /dev/hidg0 keyboard
+echo e | hid-keyboard /dev/hidg0 keyboard
+echo period | hid-keyboard /dev/hidg0 keyboard
+echo c | hid-keyboard /dev/hidg0 keyboard
+echo o | hid-keyboard /dev/hidg0 keyboard
+echo m | hid-keyboard /dev/hidg0 keyboard
+echo slash | hid-keyboard /dev/hidg0 keyboard
+echo s | hid-keyboard /dev/hidg0 keyboard
+echo h | hid-keyboard /dev/hidg0 keyboard
+echo o | hid-keyboard /dev/hidg0 keyboard
+echo r | hid-keyboard /dev/hidg0 keyboard
+echo t | hid-keyboard /dev/hidg0 keyboard
+echo s | hid-keyboard /dev/hidg0 keyboard
+echo slash | hid-keyboard /dev/hidg0 keyboard
+echo left-shift a | hid-keyboard /dev/hidg0 keyboard
+echo y | hid-keyboard /dev/hidg0 keyboard
+echo 8 | hid-keyboard /dev/hidg0 keyboard
+echo l | hid-keyboard /dev/hidg0 keyboard
+echo y | hid-keyboard /dev/hidg0 keyboard
+echo n | hid-keyboard /dev/hidg0 keyboard
+echo left-shift m | hid-keyboard /dev/hidg0 keyboard
+echo left-shift z | hid-keyboard /dev/hidg0 keyboard
+echo 4 | hid-keyboard /dev/hidg0 keyboard
+echo m | hid-keyboard /dev/hidg0 keyboard
+echo left-shift e | hid-keyboard /dev/hidg0 keyboard
+echo enter | hid-keyboard /dev/hidg0 keyboard
+```
+
+### Phase 6: DuckHunter USB Exploits
+
+now lets give the file executable permissions 
+
+```bash
+chmod +x duck_out.sh
+```
+
+now connect the file to the windows machine 
+
+```bash
+./duck_out.sh
+```
+
+<video controls width="100%" style="max-width: 800px; margin: 2rem auto; display: block; border: 1px solid #222; border-radius: 4px;">
+  <source src="/s6_root/demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+here we can see that we have successfully performed an hid attack on win machine
+
+<figure>
+  <img src="/s6_root/devicemaneger.png" alt="open with" />
+  <figcaption>we can also see that there are two keyboard and mouse connected to the pc</figcaption>
+</figure>
+
+
+
+
+before writing scripts for duckhunter plz know the following 
+
+
+* Uses Ducky Script 1.0: Kali NetHunter's DuckHunter uses legacy 1.0 syntax in ALL-CAPS, completely lacking version 3.0's advanced variables or if/else logic.
+* Auto-Enter Behavior: Unlike standard scripts, DuckHunter’s STRING command automatically hits Enter after typing out text.
+* Unique TEXT Command: It introduces a specialized TEXT command specifically to type characters without submitting an Enter keypress.
+* Bonus Mouse Support: It extends basic 1.0 features by adding mouse simulation commands like MOUSE LEFTCLICK and cursor movement.
+* No .bin Compilation: It skips standard hardware compilation, translating raw .txt files directly into Android-executable .sh shell scripts.
+
+so you cannot also use even raw 1.0 duckscripts either you need to first modify it to be used by duckhunter
+
+i will be making my own script you can access them from [here](help)
+
+
+<br>
+<br>
+<br>
+
+
+<pre class="ascii-art">
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  END OF FILE  |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+</pre>
