@@ -1,9 +1,10 @@
-// src/pages/blog.tsx
+// src/pages/blogs.tsx
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router';
 
-// Load all markdown files from ../content/
+// Load all markdown files and course.json files
 const markdownModules = import.meta.glob('../content/*.md');
+const courseJsonModules = import.meta.glob('../content/*/course.json');
 
 interface MarkdownModule {
     html: string;
@@ -76,6 +77,18 @@ const styles = `
   .post-meta { color: #888; font-size: 0.85rem; margin: 0.3rem 0; display: flex; gap: 1.5rem; flex-wrap: wrap; }
   .read-more { color: #aaa; text-decoration: underline; display: inline-block; margin-top: 0.5rem; }
   .read-more:hover { color: #fff; }
+
+  .course-badge {
+    background: #d4af37;
+    color: #000;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
 
   .pagination { display: flex; gap: 1rem; margin-top: 2rem; justify-content: center; }
   .pagination button {
@@ -168,6 +181,10 @@ const styles = `
   body.light-theme .post-meta { color: #666; }
   body.light-theme .read-more { color: #555; }
   body.light-theme .read-more:hover { color: #111; }
+  body.light-theme .course-badge {
+    background: #b38b1a;
+    color: #000;
+  }
   body.light-theme .pagination button {
     border-color: #ccc; color: #111;
   }
@@ -249,10 +266,19 @@ const ThemeToggle = () => {
     );
 };
 
-// ── Blog listing ──
+// ── Unified Blog & Course Listing ──
 const BlogListing: React.FC = () => {
-    const [allPosts, setAllPosts] = useState<
-        Array<{ slug: string; attributes: any; excerpt: string }>
+    const [allItems, setAllItems] = useState<
+        Array<{
+            slug: string;
+            type: 'post' | 'course';
+            title: string;
+            author: string;
+            date: string;
+            category: string;
+            excerpt: string;
+            modulesCount?: number;
+        }>
     >([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -260,28 +286,61 @@ const BlogListing: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 5;
 
+    // Load both blog posts and courses, then merge
     useEffect(() => {
         const loadAll = async () => {
             try {
-                const promises = Object.entries(markdownModules).map(async ([path, loader]) => {
+                // Blog posts
+                const postPromises = Object.entries(markdownModules).map(async ([path, loader]) => {
                     const slug = path.replace('../content/', '').replace('.md', '');
                     const module = (await loader()) as MarkdownModule;
                     const plain = stripHtml(module.html);
                     const excerpt = plain.length > 150 ? plain.slice(0, 150) + '…' : plain;
                     return {
                         slug,
-                        attributes: module.attributes || {},
+                        type: 'post' as const,
+                        title: module.attributes.title || slug,
+                        author: module.attributes.author || 'Anonymous',
+                        date: module.attributes.date || '',
+                        category: module.attributes.category || 'Uncategorized',
                         excerpt,
                     };
                 });
-                const results = await Promise.all(promises);
-                results.sort((a, b) => {
-                    if (a.attributes.date && b.attributes.date) {
-                        return new Date(b.attributes.date).getTime() - new Date(a.attributes.date).getTime();
-                    }
-                    return a.slug.localeCompare(b.slug);
+
+                // Courses
+                const coursePromises = Object.entries(courseJsonModules).map(async ([path, loader]) => {
+                    const segments = path.split('/');
+                    const courseSlug = segments[segments.length - 2];
+                    const imported = await loader();
+                    const data = (imported as any).default || imported;
+                    return {
+                        slug: courseSlug,
+                        type: 'course' as const,
+                        title: data.title || courseSlug,
+                        author: data.author || 'Anonymous',
+                        date: data.date || '',
+                        category: data.category || 'Course',
+                        excerpt: data.description || '',
+                        modulesCount: (data.modules || []).length,
+                    };
                 });
-                setAllPosts(results);
+
+                const [posts, courses] = await Promise.all([
+                    Promise.all(postPromises),
+                    Promise.all(coursePromises),
+                ]);
+
+                // Merge and sort by date descending (items without date go last)
+                const merged = [...posts, ...courses].sort((a, b) => {
+                    if (a.date && b.date) {
+                        return new Date(b.date).getTime() - new Date(a.date).getTime();
+                    }
+                    if (a.date) return -1;
+                    if (b.date) return 1;
+                    return a.title.localeCompare(b.title);
+                });
+
+                setAllItems(merged);
             } catch (err) {
                 console.error(err);
             } finally {
@@ -291,21 +350,23 @@ const BlogListing: React.FC = () => {
         loadAll();
     }, []);
 
+    // Extract categories from all items
     const categories = useMemo(() => {
         const set = new Set<string>();
-        allPosts.forEach(p => {
-            if (p.attributes.category) set.add(p.attributes.category);
+        allItems.forEach(item => {
+            if (item.category) set.add(item.category);
         });
-        return ['All', ...Array.from(set)];
-    }, [allPosts]);
+        return ['All', ...Array.from(set)].sort();
+    }, [allItems]);
 
+    // Filter by search term and category
     const filtered = useMemo(() => {
-        return allPosts.filter(p => {
-            const matchTitle = p.attributes.title?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false;
-            const matchCat = selectedCategory === 'All' || p.attributes.category === selectedCategory;
+        return allItems.filter(item => {
+            const matchTitle = item.title.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchCat = selectedCategory === 'All' || item.category === selectedCategory;
             return matchTitle && matchCat;
         });
-    }, [allPosts, searchTerm, selectedCategory]);
+    }, [allItems, searchTerm, selectedCategory]);
 
     const totalPages = Math.ceil(filtered.length / postsPerPage);
     const paginated = useMemo(() => {
@@ -335,8 +396,8 @@ const BlogListing: React.FC = () => {
                 <Link to="/">Home</Link> / <span className="active">Blogs</span>
             </div>
 
-            <h1 className="page-title">Blog</h1>
-            <p className="subtitle">Articles, thoughts, and explorations.</p>
+            <h1 className="page-title">Blog & Courses</h1>
+            <p className="subtitle">Articles, thoughts, and hands‑on courses.</p>
 
             <div className="filters">
                 <div>
@@ -357,32 +418,45 @@ const BlogListing: React.FC = () => {
                     </select>
                 </div>
                 <div>
-                    {filtered.length} post{filtered.length !== 1 ? 's' : ''}
+                    {filtered.length} item{filtered.length !== 1 ? 's' : ''}
                 </div>
             </div>
 
             {filtered.length === 0 ? (
-                <p>No posts match your criteria.</p>
+                <p>No items match your criteria.</p>
             ) : (
                 <>
-                    {paginated.map(post => {
-                        const { slug, attributes } = post;
-                        const title = attributes.title || slug;
-                        const author = attributes.author || 'Anonymous';
-                        const date = attributes.date || 'Unknown';
-                        const category = attributes.category || 'Uncategorized';
+                    {paginated.map(item => {
+                        const link = item.type === 'course'
+                            ? `/blogs/courses/${item.slug}`
+                            : `/blog/${item.slug}`;
 
                         return (
-                            <div key={slug} className="post-card">
+                            <div key={`${item.type}-${item.slug}`} className="post-card">
                                 <div className="title">
-                                    <Link to={`/blog/${slug}`}>{title}</Link>
+                                    <Link to={link}>
+                                        {item.title}
+                                        {item.type === 'course' && (
+                                            <span className="course-badge">Course</span>
+                                        )}
+                                    </Link>
                                 </div>
                                 <div className="post-meta">
-                                    <span>Date: {date}</span>
-                                    <span>Author: {author}</span>
-                                    <span>Category: {category}</span>
+                                    {item.date && <span>Date: {item.date}</span>}
+                                    <span>Author: {item.author}</span>
+                                    <span>Category: {item.category}</span>
+                                    {item.type === 'course' && item.modulesCount !== undefined && (
+                                        <span>{item.modulesCount} modules</span>
+                                    )}
                                 </div>
-                                <Link to={`/blog/${slug}`} className="read-more">Read more →</Link>
+                                {item.excerpt && (
+                                    <p style={{ color: '#888', margin: '0.5rem 0', fontSize: '0.9rem' }}>
+                                        {item.excerpt}
+                                    </p>
+                                )}
+                                <Link to={link} className="read-more">
+                                    {item.type === 'course' ? 'View course →' : 'Read more →'}
+                                </Link>
                             </div>
                         );
                     })}
@@ -413,7 +487,7 @@ const BlogListing: React.FC = () => {
     );
 };
 
-// ── Individual blog post ──
+// ── Individual blog post (unchanged) ──
 const BlogPost: React.FC<{ slug: string }> = ({ slug }) => {
     const [html, setHtml] = useState('');
     const [meta, setMeta] = useState<any>({});

@@ -1,0 +1,13 @@
+{
+    "title": "Linux Fundamentals",
+    "description": "A hands‑on introduction to Linux, the command line, and system basics.",
+    "author": "Instructor",
+    "date": "2024-01-15",
+    "category": "Linux",
+    "modules": [
+        {
+            "file": "01-filesystem.md",
+            "title": "The Linux Filesystem"
+        }
+    ]
+}
