@@ -109,7 +109,7 @@ This guide outlines the complete process to convert a Samsung Galaxy S6 Edge int
     
 
 <figure>
-  <img src="/public/s6_root/twrp.png" alt="Placeholder test image" />
+  <img src="/s6_root/twrp.png" alt="Placeholder test image" />
   <figcaption>After reboot you will see</figcaption>
 </figure>
 
@@ -157,7 +157,7 @@ adb install Magisk-version.apk
 ```
 
 <figure>
-  <img src="/public/s6_root/magisk.png|width=400" alt="magisk" />
+  <img src="/s6_root/magisk.png|width=400" alt="magisk" />
 </figure>
 
 
@@ -191,7 +191,7 @@ adb install mixplorer-x-xx.apk
 now instead of using the default file explorer use the mixplorer app to nevigate to nethunter.zip and install it
 
 <figure>
-  <img src="/public/s6_root/open_with.png|width=400" alt="open with" />
+  <img src="/s6_root/open_with.png|width=400" alt="open with" />
 </figure>
 
 
@@ -225,13 +225,13 @@ first execute the following command with out connecting the cable
 
 
 <figure>
-  <img src="/public/s6_root/1.png|width=700" alt="open with" />
+  <img src="/s6_root/1.png|width=700" alt="open with" />
 </figure>
 
 now lets run the command with cable attached 
 
 <figure>
-  <img src="/public/s6_root/2.png|width=700" alt="open with" />
+  <img src="/s6_root/2.png|width=700" alt="open with" />
 </figure>
 
 
