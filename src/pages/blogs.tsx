@@ -266,7 +266,6 @@ const ThemeToggle = () => {
     );
 };
 
-// ── Unified Blog & Course Listing ──
 const BlogListing: React.FC = () => {
     const [allItems, setAllItems] = useState<
         Array<{
@@ -286,11 +285,9 @@ const BlogListing: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 5;
 
-    // Load both blog posts and courses, then merge
     useEffect(() => {
         const loadAll = async () => {
             try {
-                // Blog posts
                 const postPromises = Object.entries(markdownModules).map(async ([path, loader]) => {
                     const slug = path.replace('../content/', '').replace('.md', '');
                     const module = (await loader()) as MarkdownModule;
@@ -307,7 +304,6 @@ const BlogListing: React.FC = () => {
                     };
                 });
 
-                // Courses
                 const coursePromises = Object.entries(courseJsonModules).map(async ([path, loader]) => {
                     const segments = path.split('/');
                     const courseSlug = segments[segments.length - 2];
@@ -330,7 +326,6 @@ const BlogListing: React.FC = () => {
                     Promise.all(coursePromises),
                 ]);
 
-                // Merge and sort by date descending (items without date go last)
                 const merged = [...posts, ...courses].sort((a, b) => {
                     if (a.date && b.date) {
                         return new Date(b.date).getTime() - new Date(a.date).getTime();
@@ -350,7 +345,6 @@ const BlogListing: React.FC = () => {
         loadAll();
     }, []);
 
-    // Extract categories from all items
     const categories = useMemo(() => {
         const set = new Set<string>();
         allItems.forEach(item => {
@@ -359,7 +353,6 @@ const BlogListing: React.FC = () => {
         return ['All', ...Array.from(set)].sort();
     }, [allItems]);
 
-    // Filter by search term and category
     const filtered = useMemo(() => {
         return allItems.filter(item => {
             const matchTitle = item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -449,11 +442,7 @@ const BlogListing: React.FC = () => {
                                         <span>{item.modulesCount} modules</span>
                                     )}
                                 </div>
-                                {item.excerpt && (
-                                    <p style={{ color: '#888', margin: '0.5rem 0', fontSize: '0.9rem' }}>
-                                        {item.excerpt}
-                                    </p>
-                                )}
+                                {/* --- No excerpt / description --- */}
                                 <Link to={link} className="read-more">
                                     {item.type === 'course' ? 'View course →' : 'Read more →'}
                                 </Link>
