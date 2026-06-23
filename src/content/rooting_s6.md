@@ -3,7 +3,7 @@ title: 'Samsung S6 Edge NetHunter HID Conversion'
 author: 'Bilal ☽'
 date: '2026-06-22'
 category: 'HID Attacks'
-status: 'In Progress'
+status: 'completed'
 ---
 
 <pre class="ascii-art">
@@ -200,7 +200,7 @@ now instead of using the default file explorer use the mixplorer app to nevigate
 
 ### Phase 4: Enabling HID via kernel package
 
-The stock LineageOS kernel does not natively support USB HID gadget simulation (`/dev/hidg0`). You must inject or patch the kernel module.
+The stock LineageOS kernel does not natively support USB HID gadget simulation (`/dev/hid*`). You must inject or patch the kernel module.
 
 ### Step 1: Check Pre-compiled Modules
 
@@ -211,14 +211,14 @@ we will be using **kernel-nethunter-20231005_083817-zerolte-nougat.zip**
 * Its primary purpose is to enable specialized hacker attacks like USB HID keyboard emulation and Wi-Fi injection.
 * It unlocks raw USB hardware permissions that are completely blocked by default on standard commercial phones.
 
-you could find this file from [here](help)
+you could find this file from [here](https://github.com/bilalaniq/S6-NetHunter-HID-Conversion)
 
 to install it you can use the same procedure to install the nethunter
 
 now lets check if it works or not
 
 ```bash
- ls -l /dev/hidg*
+ ls -l /dev/hid*
 ```
 
 first execute the following command with out connecting the cable 
@@ -370,7 +370,94 @@ before writing scripts for duckhunter plz know the following
 
 so you cannot also use even raw 1.0 duckscripts either you need to first modify it to be used by duckhunter
 
-i will be making my own script you can access them from [here](help)
+i will be making my own script you can access them from [here](https://github.com/bilalaniq/DuckHunter-Scripts)
+
+
+<br>
+
+### Phase 7: Wireless NetHunter Connection
+
+LineageOS allows you to share your network connection wirelessly using the "USB Tethering" engine over Wi-Fi/ADB frameworks. This method exposes a direct, fast network adapter between NetHunter and your Kali desktop without cables.
+
+
+### 1. Enable ADB over the Network
+
+1. Go to **Settings** > **System** > **Developer Options**.
+2. Scroll down to **Debugging** and look for **ADB over the Network**.
+3. Enable it
+
+
+<figure>
+  <img src="/s6_root/wirelless.png|width=400" alt="open with" />
+</figure>
+
+
+---
+
+### 2. Establish the ADB Tunnel
+
+1. On your Kali Desktop terminal, connect to your phone's tethering gateway:
+   ```bash
+   adb connect <Phone_Tethering_IP>:5555
+   ```
+2. Verify the wireless link:
+   ```bash
+   adb devices
+   ```
+
+---
+
+### 3. Launch the Android Shell
+
+Execute the following command in your Kali Desktop terminal to start the shell session.
+
+If only one device is connected:
+```bash
+adb shell
+```
+
+If multiple devices are connected, specify the target device using its IP address and port:
+```bash
+adb -s <ipaddress:port> shell
+```
+
+#### Elevate Privileges to Root
+
+Once the shell is active, request root access by running:
+```bash
+su
+```
+
+<figure>
+  <img src="/s6_root/su.png|width=400" alt="open with" />
+</figure>
+
+
+#### Initialize NetHunter
+
+Execute the following command to boot into the NetHunter environment directly from your Kali machine:
+
+```bash
+su -c /data/data/com.offsec.nethunter/scripts/bootkali
+```
+
+* su -c: Runs a single command with root (administrator) privileges.
+* /data/.../bootkali: Points to the exact path of the NetHunter startup script.
+* The Result: It initializes the Kali Linux subsystem inside your Android device.
+
+we would get this result
+
+<figure>
+  <img src="/s6_root/kali.png|width=600" alt="open with" />
+</figure>
+
+
+now we could wirelessly execute the duckhunter scripts
+
+
+
+
+
 
 
 <br>
