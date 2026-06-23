@@ -41,6 +41,7 @@ status: 'completed'
                                   │  4. Phase 3: NetHunter Chroot Setup                           │
                                   │  5. Phase 4: USB HID Kernel Enforcement                       │
                                   │  6. Phase 5: DuckHunter USB Exploits                          │
+                                  │  7. Phase 6: Wireless NetHunter  Connection                   │
                                   │                                                               │
                                   └───────────────────────────────────────────────────────────────┘
 </pre>
@@ -330,8 +331,6 @@ echo left-shift e | hid-keyboard /dev/hidg0 keyboard
 echo enter | hid-keyboard /dev/hidg0 keyboard
 ```
 
-### Phase 6: DuckHunter USB Exploits
-
 now lets give the file executable permissions 
 
 ```bash
@@ -375,7 +374,7 @@ i will be making my own script you can access them from [here](https://github.co
 
 <br>
 
-### Phase 7: Wireless NetHunter Connection
+### Phase 6: Wireless NetHunter Connection
 
 LineageOS allows you to share your network connection wirelessly using the "USB Tethering" engine over Wi-Fi/ADB frameworks. This method exposes a direct, fast network adapter between NetHunter and your Kali desktop without cables.
 
